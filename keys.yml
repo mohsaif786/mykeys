@@ -1,0 +1,16 @@
+--- ##adding user with private keys
+- hosts: local
+
+  tasks:
+
+  - name: add user and create ssh key
+
+    user: name=myadmin
+
+  - name: dowanload pubkey from Github and placed as authorized_keys
+
+    git: repo=https://github.com/mohsaif786/mykeys dest=/tmp/keys
+
+  - name: Create authorized_keys from the file that just downloaded
+
+    authorized_key: user=myadmin key="{{ lookup('file', '/tmp/keys/authorized_keys') }}"
